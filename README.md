@@ -42,7 +42,7 @@ Users can:
 
 ## Developer
 Developed by: **Ram Bhola Vaishnav**  
-Email: ramvaishanav650@gmail.com  
+Email: ramvaishanav650@gmail.com 
 
 ---
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "267287247981",
+    "project_id": "rozana-grocery",
+    "storage_bucket": "rozana-grocery.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267287247981:android:bc802a2665e31350635364",
+        "android_client_info": {
+          "package_name": "com.example.rozana_grocery_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_uzOkfrf4f4U0bPkw20GWW9OYBjhavoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

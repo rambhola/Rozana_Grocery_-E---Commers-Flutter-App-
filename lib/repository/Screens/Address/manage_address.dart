@@ -7,6 +7,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:rozana_grocery_app/repository/Screens/Address/new_address.dart';
 
 import '../Home/home_screen.dart';
 import '../Profile/profile_screen.dart';
@@ -97,14 +98,14 @@ class _ManageAddressState extends State<ManageAddress> {
                   );
                 });
 
-                // Optionally save the address later if needed
-                // setState(() {
-                //   _savedAddresses.add({
-                //     'address': address,
-                //     'lat': latlng.latitude,
-                //     'lng': latlng.longitude,
-                //   });
-                // });
+               // Optionally save the address later if needed
+                setState(() {
+                  _savedAddresses.add({
+                    'address': address,
+                    'lat': latlng.latitude,
+                    'lng': latlng.longitude,
+                  });
+                });
               },
               child: const Text("Save Address"),
             ),
@@ -415,34 +416,39 @@ class _ManageAddressState extends State<ManageAddress> {
                 // Add new address
                 Padding(
                   padding: EdgeInsets.all(10.w),
-                  child: Container(
-                    height: isLandscape ? 85.h : 60.h,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                        width: 2.w,
-                        color: const Color(0xFF00A86B),
+                  child: GestureDetector(
+                    onTap: () {
+                      // Get.to(NewAddress());
+                    },
+                    child: Container(
+                      height: isLandscape ? 85.h : 60.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(10.r),
+                        border: Border.all(
+                          width: 2.w,
+                          color: const Color(0xFF00A86B),
+                        ),
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.add_location_alt,
-                          color: Color(0xFF00A86B),
-                        ),
-                        SizedBox(width: 8.w),
-                        Text(
-                          "Add New Address",
-                          style: TextStyle(
-                            color: const Color(0xFF00A86B),
-                            fontSize: isLandscape ? 11.sp : 17.sp,
-                            fontWeight: FontWeight.bold,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.add_location_alt,
+                            color: Color(0xFF00A86B),
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 8.w),
+                          Text(
+                            "Add New Address",
+                            style: TextStyle(
+                              color: const Color(0xFF00A86B),
+                              fontSize: isLandscape ? 11.sp : 17.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -7,10 +7,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:rozana_grocery_app/repository/Screens/Address/new_address.dart';
-
 import '../Home/home_screen.dart';
 import '../Profile/profile_screen.dart';
+import 'new_address.dart';
 
 class ManageAddress extends StatefulWidget {
   const ManageAddress({super.key});
@@ -418,7 +417,7 @@ class _ManageAddressState extends State<ManageAddress> {
                   padding: EdgeInsets.all(10.w),
                   child: GestureDetector(
                     onTap: () {
-                      // Get.to(NewAddress());
+                      Get.to(NewAddress());
                     },
                     child: Container(
                       height: isLandscape ? 85.h : 60.h,

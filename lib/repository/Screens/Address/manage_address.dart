@@ -91,7 +91,7 @@ class _ManageAddressState extends State<ManageAddress> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => HomeScreen(
-                        address: address,
+                        address: address, newAddress: '',
                       ),
                     ),
                   );

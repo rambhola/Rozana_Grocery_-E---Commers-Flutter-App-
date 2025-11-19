@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:rozana_grocery_app/repository/Screens/Address/new_address.dart';
+import 'package:rozana_grocery_app/repository/Screens/Address/pick_location.dart';
+import 'package:rozana_grocery_app/repository/Screens/Home/home_screen.dart';
+import 'package:rozana_grocery_app/repository/Screens/Profile/your_profile.dart';
 import 'firebase_options.dart';
 
 
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
             return const GetMaterialApp(
               useInheritedMediaQuery: true, // ensures correct adaptive scaling
               debugShowCheckedModeBanner: false,
-              home: NewAddress(), // or HomeScreen() for testing
+              home: HomeScreen(address: '', newAddress: '',), // or HomeScreen() for testing
             );
           },
         );

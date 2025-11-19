@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: IconButton(
                 onPressed: () {
                   // Navigating to HomeScreen with required parameter
-                  Get.to(() => const HomeScreen(address: 'address'));
+                  Get.to(() => const HomeScreen(address: 'address', newAddress: 'newAddress',));
                 },
                 icon: const Icon(
                   Icons.arrow_back,

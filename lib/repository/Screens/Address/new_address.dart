@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:rozana_grocery_app/repository/Screens/Address/addresstype_controller.dart';
 import 'package:rozana_grocery_app/repository/Screens/Address/manage_address.dart';
 import 'package:rozana_grocery_app/repository/widgets/ui_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Profile/profile_screen.dart';
 
@@ -16,6 +17,41 @@ class NewAddress extends StatefulWidget {
 
 class _NewAddressState extends State<NewAddress> {
   final NewAddressController controller = Get.put(NewAddressController());
+
+  final TextEditingController streetController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController stateController = TextEditingController();
+  final TextEditingController pinController = TextEditingController();
+  final TextEditingController countryController = TextEditingController();
+  final TextEditingController landmarkController = TextEditingController();
+
+  Future<void> saveNewForm() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('street', streetController.text);
+    prefs.setString('city', cityController.text);
+    prefs.setString('state', stateController.text);
+    prefs.setString('pinCode', pinController.text);
+    prefs.setString('country', countryController.text);
+    prefs.setString('landmark', landmarkController.text);
+  }
+
+  Future<void> loadFormData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      streetController.text = prefs.getString('street') ?? '';
+      cityController.text = prefs.getString('city') ?? '';
+      stateController.text = prefs.getString('state') ?? '';
+      pinController.text = prefs.getString('pinCode') ?? '';
+      countryController.text = prefs.getString('country') ?? '';
+      landmarkController.text = prefs.getString('landmark') ?? '';
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadFormData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +120,7 @@ class _NewAddressState extends State<NewAddress> {
                             controller.selectedTypeIndex.value = 1;
                           },
                           child: Obx(
-                                () => Container(
+                            () => Container(
                               height: isLandscape ? 75.h : 56.h,
                               width: 120.w,
                               decoration: BoxDecoration(
@@ -117,7 +153,7 @@ class _NewAddressState extends State<NewAddress> {
                             controller.selectedTypeIndex.value = 2;
                           },
                           child: Obx(
-                                () => Container(
+                            () => Container(
                               height: isLandscape ? 75.h : 56.h,
                               width: 120.w,
                               decoration: BoxDecoration(
@@ -150,7 +186,7 @@ class _NewAddressState extends State<NewAddress> {
                             controller.selectedTypeIndex.value = 3;
                           },
                           child: Obx(
-                                () => Container(
+                            () => Container(
                               height: isLandscape ? 75.h : 56.h,
                               width: 118.w,
                               decoration: BoxDecoration(
@@ -178,14 +214,16 @@ class _NewAddressState extends State<NewAddress> {
                 ),
 
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 25.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 15.w,
+                    vertical: 25.h,
+                  ),
                   child: Card(
                     elevation: 5,
                     child: GestureDetector(
-                      onTap: () {
-                      },
+                      onTap: () {},
                       child: Container(
-                        height: isLandscape ?  1200.h: 760.h,
+                        height: isLandscape ? 1200.h : 760.h,
                         width: isLandscape ? 350.w : 390.w,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(11),
@@ -205,13 +243,13 @@ class _NewAddressState extends State<NewAddress> {
                                 text: 'Street Address ',
                                 color: Colors.black,
                                 fontweight: FontWeight.bold,
-                                fontsize: isLandscape ?  9.sp: 18.sp,
+                                fontsize: isLandscape ? 9.sp : 18.sp,
                               ),
                               SizedBox(height: 5.h),
 
                               Container(
-                                height: isLandscape ? 90.h:55.h,
-                                width: isLandscape ? 330.w :340.w,
+                                height: isLandscape ? 90.h : 55.h,
+                                width: isLandscape ? 330.w : 340.w,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(11),
                                   color: Colors.white,
@@ -223,11 +261,14 @@ class _NewAddressState extends State<NewAddress> {
                                 child: Padding(
                                   padding: EdgeInsets.all(10.0.w),
                                   child: TextField(
-                                    onChanged: (value) => controller.street.value = value,
+                                    onChanged: (value) =>
+                                        controller.street.value = value,
                                     decoration: InputDecoration(
-                                        hintText: 'Enter street address',
-                                        border: InputBorder.none,
-                                        hintStyle: TextStyle(fontSize: isLandscape ?10.sp : 19.sp)
+                                      hintText: 'Enter street address',
+                                      border: InputBorder.none,
+                                      hintStyle: TextStyle(
+                                        fontSize: isLandscape ? 10.sp : 19.sp,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -240,20 +281,23 @@ class _NewAddressState extends State<NewAddress> {
                                 children: [
                                   /// CITY
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       UiHelper.customText(
                                         text: 'City',
                                         color: Colors.black,
                                         fontweight: FontWeight.bold,
-                                        fontsize: isLandscape ?  9.sp: 18.sp,
+                                        fontsize: isLandscape ? 9.sp : 18.sp,
                                       ),
                                       SizedBox(height: 10.h),
                                       Container(
-                                        height: isLandscape ? 90.h: 55.h,
+                                        height: isLandscape ? 90.h : 55.h,
                                         width: 150.w,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(11),
+                                          borderRadius: BorderRadius.circular(
+                                            11,
+                                          ),
                                           color: Colors.white,
                                           border: Border.all(
                                             width: 1.5.r,
@@ -262,12 +306,17 @@ class _NewAddressState extends State<NewAddress> {
                                         ),
                                         child: Padding(
                                           padding: EdgeInsets.all(10.0.w),
-                                          child:  TextField(
-                                            onChanged: (value) => controller.city.value = value,
+                                          child: TextField(
+                                            onChanged: (value) =>
+                                                controller.city.value = value,
                                             decoration: InputDecoration(
-                                                hintText: 'City',
-                                                border: InputBorder.none,
-                                                hintStyle: TextStyle(fontSize: isLandscape ?10.sp : 19.sp)
+                                              hintText: 'City',
+                                              border: InputBorder.none,
+                                              hintStyle: TextStyle(
+                                                fontSize: isLandscape
+                                                    ? 10.sp
+                                                    : 19.sp,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -279,20 +328,23 @@ class _NewAddressState extends State<NewAddress> {
 
                                   /// STATE
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       UiHelper.customText(
                                         text: 'State',
                                         color: Colors.black,
                                         fontweight: FontWeight.bold,
-                                        fontsize: isLandscape ?  9.sp: 18.sp,
+                                        fontsize: isLandscape ? 9.sp : 18.sp,
                                       ),
                                       SizedBox(height: 10.h),
                                       Container(
-                                        height:  isLandscape ? 90.h:55.h,
+                                        height: isLandscape ? 90.h : 55.h,
                                         width: 148.w,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(11),
+                                          borderRadius: BorderRadius.circular(
+                                            11,
+                                          ),
                                           color: Colors.white,
                                           border: Border.all(
                                             width: 1.5.r,
@@ -302,12 +354,17 @@ class _NewAddressState extends State<NewAddress> {
                                         child: Padding(
                                           padding: EdgeInsets.all(10.0.w),
                                           child: TextField(
-                                            onChanged: (value) => controller.state.value = value,
-                                            decoration:  InputDecoration(
-                                                hintText: 'State',
-                                                border: InputBorder.none,
-                                                errorMaxLines: 2,
-                                                hintStyle: TextStyle(fontSize: isLandscape ?10.sp : 19.sp)
+                                            onChanged: (value) =>
+                                                controller.state.value = value,
+                                            decoration: InputDecoration(
+                                              hintText: 'State',
+                                              border: InputBorder.none,
+                                              errorMaxLines: 2,
+                                              hintStyle: TextStyle(
+                                                fontSize: isLandscape
+                                                    ? 10.sp
+                                                    : 19.sp,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -324,20 +381,23 @@ class _NewAddressState extends State<NewAddress> {
                                 children: [
                                   /// PINCODE
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       UiHelper.customText(
                                         text: 'Pincode',
                                         color: Colors.black,
                                         fontweight: FontWeight.bold,
-                                        fontsize: isLandscape ?  9.sp: 18.sp,
+                                        fontsize: isLandscape ? 9.sp : 18.sp,
                                       ),
                                       SizedBox(height: 10.h),
                                       Container(
-                                        height: isLandscape ? 90.h: 55.h,
+                                        height: isLandscape ? 90.h : 55.h,
                                         width: 150.w,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(11),
+                                          borderRadius: BorderRadius.circular(
+                                            11,
+                                          ),
                                           color: Colors.white,
                                           border: Border.all(
                                             width: 1.5.r,
@@ -346,12 +406,18 @@ class _NewAddressState extends State<NewAddress> {
                                         ),
                                         child: Padding(
                                           padding: EdgeInsets.all(10.0.w),
-                                          child:  TextField(
-                                            onChanged: (value) => controller.pinCode.value = value,
+                                          child: TextField(
+                                            onChanged: (value) =>
+                                                controller.pinCode.value =
+                                                    value,
                                             decoration: InputDecoration(
-                                                hintText: 'PinCode',
-                                                border: InputBorder.none,
-                                                hintStyle: TextStyle(fontSize: isLandscape ? 10.sp : 19.sp)
+                                              hintText: 'PinCode',
+                                              border: InputBorder.none,
+                                              hintStyle: TextStyle(
+                                                fontSize: isLandscape
+                                                    ? 10.sp
+                                                    : 19.sp,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -363,20 +429,23 @@ class _NewAddressState extends State<NewAddress> {
 
                                   /// COUNTRY
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       UiHelper.customText(
                                         text: 'Country',
                                         color: Colors.black,
                                         fontweight: FontWeight.bold,
-                                        fontsize: isLandscape ?  9.sp: 18.sp,
+                                        fontsize: isLandscape ? 9.sp : 18.sp,
                                       ),
                                       SizedBox(height: 10.h),
                                       Container(
-                                        height: isLandscape ? 90.h:55.h,
+                                        height: isLandscape ? 90.h : 55.h,
                                         width: 148.w,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(11),
+                                          borderRadius: BorderRadius.circular(
+                                            11,
+                                          ),
                                           color: Colors.white,
                                           border: Border.all(
                                             width: 1.5.r,
@@ -386,11 +455,17 @@ class _NewAddressState extends State<NewAddress> {
                                         child: Padding(
                                           padding: EdgeInsets.all(10.0.w),
                                           child: TextField(
-                                            onChanged: (value) => controller.country.value = value,
+                                            onChanged: (value) =>
+                                                controller.country.value =
+                                                    value,
                                             decoration: InputDecoration(
-                                                hintText: 'Country',
-                                                border: InputBorder.none,
-                                                hintStyle: TextStyle(fontSize: isLandscape ?10.sp : 19.sp)
+                                              hintText: 'Country',
+                                              border: InputBorder.none,
+                                              hintStyle: TextStyle(
+                                                fontSize: isLandscape
+                                                    ? 10.sp
+                                                    : 19.sp,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -407,11 +482,11 @@ class _NewAddressState extends State<NewAddress> {
                                 text: 'Landmark',
                                 color: Colors.black,
                                 fontweight: FontWeight.bold,
-                                fontsize: isLandscape ?  9.sp: 18.sp,
+                                fontsize: isLandscape ? 9.sp : 18.sp,
                               ),
 
                               Container(
-                                height:isLandscape ? 90.h: 55.h,
+                                height: isLandscape ? 90.h : 55.h,
                                 width: 340.w,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(11),
@@ -425,9 +500,11 @@ class _NewAddressState extends State<NewAddress> {
                                   padding: EdgeInsets.all(10.0.w),
                                   child: TextField(
                                     decoration: InputDecoration(
-                                        hintText: 'Near Hospitals',
-                                        border: InputBorder.none,
-                                        hintStyle: TextStyle(fontSize: isLandscape ?10.sp : 19.sp)
+                                      hintText: 'Near Hospitals',
+                                      border: InputBorder.none,
+                                      hintStyle: TextStyle(
+                                        fontSize: isLandscape ? 10.sp : 19.sp,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -437,21 +514,21 @@ class _NewAddressState extends State<NewAddress> {
 
                               /// LAT - LNG ROW
                               Container(
-                                height: isLandscape ? 90.h:55.h,
+                                height: isLandscape ? 90.h : 55.h,
                                 width: 340.w,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(11),
                                   color: Colors.white,
                                   border: Border.all(
-                                    width: isLandscape ? 2.5: 1.5.r,
+                                    width: isLandscape ? 2.5 : 1.5.r,
                                     color: Color(0xFF00A86B),
                                   ),
                                 ),
                                 child: Padding(
-                                  padding:  EdgeInsets.all(8.0.r),
+                                  padding: EdgeInsets.all(8.0.r),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         'Lat: ${controller.currentLatLng.value?.latitude}',
@@ -472,7 +549,7 @@ class _NewAddressState extends State<NewAddress> {
                                     /// bottom sheet
                                     Get.bottomSheet(
                                       Container(
-                                        width: isLandscape ? 350.w: 370.w,
+                                        width: isLandscape ? 350.w : 370.w,
                                         height: isLandscape ? 200.h : 370.h,
                                         decoration: BoxDecoration(
                                           color: Color(0xFF00A86B),
@@ -490,9 +567,9 @@ class _NewAddressState extends State<NewAddress> {
                                             return Column(
                                               mainAxisSize: MainAxisSize.min,
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                                  MainAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   "Update Locations",
@@ -503,22 +580,24 @@ class _NewAddressState extends State<NewAddress> {
                                                   ),
                                                 ),
                                                 SizedBox(height: 10),
-                                                controller.loadingLocations.value
+                                                controller
+                                                        .loadingLocations
+                                                        .value
                                                     ? Text(
-                                                  "Fetching GPS coordinates Updating...",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                  ),
-                                                )
+                                                        "Fetching GPS coordinates Updating...",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 16,
+                                                        ),
+                                                      )
                                                     : Text(
-                                                  "Lat: ${controller.currentLatLng.value?.latitude}\n"
-                                                      "Lng: ${controller.currentLatLng.value?.longitude}",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
+                                                        "Lat: ${controller.currentLatLng.value?.latitude}\n"
+                                                        "Lng: ${controller.currentLatLng.value?.longitude}",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
                                               ],
                                             );
                                           }),
@@ -531,16 +610,16 @@ class _NewAddressState extends State<NewAddress> {
                                   },
 
                                   child: Container(
-                                    height: isLandscape ? 220.h: 170.h,
+                                    height: isLandscape ? 220.h : 170.h,
                                     width: isLandscape ? 320.w : 340.w,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(11),
                                       color: Colors.grey.shade400,
                                     ),
                                     child: Obx(
-                                          () => Column(
+                                      () => Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           Icon(
                                             Icons.location_on_outlined,
@@ -549,7 +628,7 @@ class _NewAddressState extends State<NewAddress> {
                                           ),
                                           UiHelper.customText(
                                             text:
-                                            '${controller.currentLatLng.value?.latitude}, ${controller.currentLatLng.value?.longitude}',
+                                                '${controller.currentLatLng.value?.latitude}, ${controller.currentLatLng.value?.longitude}',
                                             color: Colors.grey.shade700,
                                             fontweight: FontWeight.normal,
                                             fontsize: 16,
@@ -567,7 +646,7 @@ class _NewAddressState extends State<NewAddress> {
                               Row(
                                 children: [
                                   Obx(
-                                        () => Checkbox(
+                                    () => Checkbox(
                                       value: controller.isDefault.value,
                                       onChanged: (value) {
                                         controller.toggleDefault(value);
@@ -578,7 +657,7 @@ class _NewAddressState extends State<NewAddress> {
                                     text: 'Set as default address',
                                     color: Colors.black,
                                     fontweight: FontWeight.bold,
-                                    fontsize: isLandscape ?  8.sp: 14.sp,
+                                    fontsize: isLandscape ? 8.sp : 14.sp,
                                   ),
                                 ],
                               ),
@@ -632,7 +711,7 @@ class _NewAddressState extends State<NewAddress> {
                             } else {
                               Get.bottomSheet(
                                 Container(
-                                  width:  isLandscape ?700.w:370.w,
+                                  width: isLandscape ? 700.w : 370.w,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.only(
@@ -645,7 +724,7 @@ class _NewAddressState extends State<NewAddress> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         if (controller
                                             .streetError
@@ -659,7 +738,10 @@ class _NewAddressState extends State<NewAddress> {
                                             ),
                                           ),
 
-                                        if (controller.cityError.value.isNotEmpty)
+                                        if (controller
+                                            .cityError
+                                            .value
+                                            .isNotEmpty)
                                           Text(
                                             controller.cityError.value,
                                             style: TextStyle(
@@ -703,13 +785,13 @@ class _NewAddressState extends State<NewAddress> {
                                               fontSize: 16,
                                             ),
                                           ),
-
                                       ],
                                     ),
                                   ),
                                 ),
                               );
                             }
+                            saveNewForm();
                           },
                           child: Container(
                             height: isLandscape ? 75.h : 56.h,

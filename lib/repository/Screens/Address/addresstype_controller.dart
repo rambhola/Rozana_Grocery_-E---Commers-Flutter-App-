@@ -8,7 +8,7 @@ class NewAddressController extends GetxController {
   var latitude = 0.0.obs;
   var longitude = 0.0.obs;
 
-  RxInt selectedTypeIndex = (1).obs;
+  RxInt selectedTypeIndex = 1.obs;
   var showForm = false.obs;
 
   RxBool isDefault = false.obs;

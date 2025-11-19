@@ -1,3 +1,6 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:rozana_grocery_app/repository/Screens/Address/pick_location.dart';
 import 'package:rozana_grocery_app/repository/Screens/Profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +9,8 @@ import '../../widgets/ui_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   final String address ;
-  const HomeScreen({super.key, required this.address,});
+  final String newAddress ;
+  const HomeScreen({super.key, required this.address, required this.newAddress,});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -17,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final address = widget.address;
+    final newAddress = widget.newAddress;
 
 
     return Scaffold(
@@ -54,16 +59,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.white,
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                width: 300.w,
-                                child: Text(
-                                  address.isNotEmpty
-                                      ? address
-                                      : "Select your delivery location",
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 12.sp,fontWeight: FontWeight.w500),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                              InkWell(
+                                onTap: () {
+                                  Get.to(PickLocation());
+                                },
+                                child: SizedBox(
+                                  width: 300.w,
+                                  child: Text(
+                                    newAddress.isNotEmpty
+                                        ? newAddress
+                                        : "Select your delivery location",
+                                    style:
+                                    TextStyle(color: Colors.white, fontSize: 12.sp,fontWeight: FontWeight.w500),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
                             ],
@@ -839,9 +849,44 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+            
           ],
         ),
       ),
+      floatingActionButton: Container(
+        width: 65,
+        height: 65,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF00A86B),
+              Color(0xFF02C97A),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.green.withOpacity(0.4),
+              blurRadius: 12,
+              spreadRadius: 2,
+              offset: Offset(0, 6),
+            ),
+          ],
+        ),
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          onPressed: () {},
+          child: Icon(
+            Icons.arrow_forward,
+            size: 30,
+            color: Colors.white,
+          ),
+        ),
+      ),
+
     );
   }
 }

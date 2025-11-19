@@ -18,7 +18,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
 
   // lites of the all pages to navigates
   List<Widget> pages = [
-    HomeScreen(address: 'address',),
+    HomeScreen(address: 'address', newAddress: 'newAddress',),
     CategoryScreen(),
     CartScreen(),
     PrintScreen(),

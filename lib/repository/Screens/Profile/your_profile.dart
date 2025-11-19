@@ -29,6 +29,20 @@ class _YourProfileState extends State<YourProfile> {
     prefs.setString('email', emailController.text);
     prefs.setString('gender', genderController.text);
 
+
+
+    if( nameController.text.trim().isEmpty ||
+        phoneController.text.isEmpty  ||emailController.text.isEmpty
+        || genderController.text.isEmpty ){
+      Get.snackbar('Error', '',
+        messageText:  Text("Please fill all required Field",style: TextStyle(fontSize:18,color: Colors.white ),),
+        backgroundColor: Colors.red.shade400,
+        colorText: Colors.white,
+        snackPosition:  SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
     if (controller.imagePath.value.isNotEmpty) {
       await prefs.setString('image_path', controller.imagePath.value);
     }
@@ -39,6 +53,8 @@ class _YourProfileState extends State<YourProfile> {
       colorText: Colors.white,
       snackPosition: SnackPosition.BOTTOM,
     );
+
+
   }
 
   Future<void> loadProfile() async {
@@ -272,20 +288,25 @@ class _YourProfileState extends State<YourProfile> {
 
                     // Update Button
                     Center(
-                      child: Container(
-                        height: isLandscape ? 60.h : 65.h,
-                        width: 350.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25.r),
-                          color: const Color(0xFF00A86B),
-                        ),
-                        child: TextButton(
-                          onPressed: saveProfile,
-                          child: Text(
-                            'Update',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: isLandscape ? 12.sp : 20.sp,
+                      child: GestureDetector(
+                        onTap: () {
+                          saveProfile();
+                        },
+                        child: Container(
+                          height: isLandscape ? 60.h : 65.h,
+                          width: 350.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.r),
+                            color: const Color(0xFF00A86B),
+                          ),
+                          child: TextButton(
+                            onPressed: saveProfile,
+                            child: Text(
+                              'Update',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: isLandscape ? 12.sp : 20.sp,
+                              ),
                             ),
                           ),
                         ),

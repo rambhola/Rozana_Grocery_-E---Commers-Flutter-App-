@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:rozana_grocery_app/repository/Screens/Address/addresstype_controller.dart';
 import 'package:rozana_grocery_app/repository/Screens/Address/manage_address.dart';
+import 'package:rozana_grocery_app/repository/Screens/Address/pick_location.dart';
+
 import 'package:rozana_grocery_app/repository/widgets/ui_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../Profile/profile_screen.dart';
-
 class NewAddress extends StatefulWidget {
   const NewAddress({super.key});
 
@@ -33,6 +33,10 @@ class _NewAddressState extends State<NewAddress> {
     prefs.setString('pinCode', pinController.text);
     prefs.setString('country', countryController.text);
     prefs.setString('landmark', landmarkController.text);
+    prefs.setInt('addressType', controller.selectedTypeIndex.value);
+    prefs.setDouble('latitude', controller.currentLatLng.value?.latitude ?? 0);
+    prefs.setDouble('longitude', controller.currentLatLng.value?.longitude ?? 0);
+    prefs.setBool('isDefault', controller.isDefault.value);
   }
 
   Future<void> loadFormData() async {
@@ -44,6 +48,13 @@ class _NewAddressState extends State<NewAddress> {
       pinController.text = prefs.getString('pinCode') ?? '';
       countryController.text = prefs.getString('country') ?? '';
       landmarkController.text = prefs.getString('landmark') ?? '';
+      controller.selectedTypeIndex.value = prefs.getInt('addressType') ?? 1;
+      double lat = prefs.getDouble('latitude') ?? 0.0;
+      double lng = prefs.getDouble('longitude') ?? 0.0;
+      if (lat != 0.0 && lng != 0.0) {
+        controller.currentLatLng.value = LatLng(lat, lng);
+      }
+      controller.isDefault.value = prefs.getBool('isDefault') ?? false;
     });
   }
 
@@ -68,7 +79,7 @@ class _NewAddressState extends State<NewAddress> {
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              onPressed: () => Get.to(() => const ProfileScreen()),
+              onPressed: () => Get.back(), // Changed to Get.back() for proper back navigation
               icon: const Icon(
                 Icons.arrow_back,
                 color: Color(0xFF00A86B),
@@ -120,7 +131,7 @@ class _NewAddressState extends State<NewAddress> {
                             controller.selectedTypeIndex.value = 1;
                           },
                           child: Obx(
-                            () => Container(
+                                () => Container(
                               height: isLandscape ? 75.h : 56.h,
                               width: 120.w,
                               decoration: BoxDecoration(
@@ -153,7 +164,7 @@ class _NewAddressState extends State<NewAddress> {
                             controller.selectedTypeIndex.value = 2;
                           },
                           child: Obx(
-                            () => Container(
+                                () => Container(
                               height: isLandscape ? 75.h : 56.h,
                               width: 120.w,
                               decoration: BoxDecoration(
@@ -186,7 +197,7 @@ class _NewAddressState extends State<NewAddress> {
                             controller.selectedTypeIndex.value = 3;
                           },
                           child: Obx(
-                            () => Container(
+                                () => Container(
                               height: isLandscape ? 75.h : 56.h,
                               width: 118.w,
                               decoration: BoxDecoration(
@@ -261,8 +272,9 @@ class _NewAddressState extends State<NewAddress> {
                                 child: Padding(
                                   padding: EdgeInsets.all(10.0.w),
                                   child: TextField(
+                                    controller: streetController,
                                     onChanged: (value) =>
-                                        controller.street.value = value,
+                                    controller.street.value = value,
                                     decoration: InputDecoration(
                                       hintText: 'Enter street address',
                                       border: InputBorder.none,
@@ -282,7 +294,7 @@ class _NewAddressState extends State<NewAddress> {
                                   /// CITY
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       UiHelper.customText(
                                         text: 'City',
@@ -307,8 +319,9 @@ class _NewAddressState extends State<NewAddress> {
                                         child: Padding(
                                           padding: EdgeInsets.all(10.0.w),
                                           child: TextField(
+                                            controller: cityController,
                                             onChanged: (value) =>
-                                                controller.city.value = value,
+                                            controller.city.value = value,
                                             decoration: InputDecoration(
                                               hintText: 'City',
                                               border: InputBorder.none,
@@ -329,7 +342,7 @@ class _NewAddressState extends State<NewAddress> {
                                   /// STATE
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       UiHelper.customText(
                                         text: 'State',
@@ -354,8 +367,9 @@ class _NewAddressState extends State<NewAddress> {
                                         child: Padding(
                                           padding: EdgeInsets.all(10.0.w),
                                           child: TextField(
+                                            controller: stateController,
                                             onChanged: (value) =>
-                                                controller.state.value = value,
+                                            controller.state.value = value,
                                             decoration: InputDecoration(
                                               hintText: 'State',
                                               border: InputBorder.none,
@@ -382,7 +396,7 @@ class _NewAddressState extends State<NewAddress> {
                                   /// PINCODE
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       UiHelper.customText(
                                         text: 'Pincode',
@@ -407,9 +421,10 @@ class _NewAddressState extends State<NewAddress> {
                                         child: Padding(
                                           padding: EdgeInsets.all(10.0.w),
                                           child: TextField(
+                                            controller: pinController,
                                             onChanged: (value) =>
-                                                controller.pinCode.value =
-                                                    value,
+                                            controller.pinCode.value =
+                                                value,
                                             decoration: InputDecoration(
                                               hintText: 'PinCode',
                                               border: InputBorder.none,
@@ -430,7 +445,7 @@ class _NewAddressState extends State<NewAddress> {
                                   /// COUNTRY
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       UiHelper.customText(
                                         text: 'Country',
@@ -455,9 +470,10 @@ class _NewAddressState extends State<NewAddress> {
                                         child: Padding(
                                           padding: EdgeInsets.all(10.0.w),
                                           child: TextField(
+                                            controller: countryController,
                                             onChanged: (value) =>
-                                                controller.country.value =
-                                                    value,
+                                            controller.country.value =
+                                                value,
                                             decoration: InputDecoration(
                                               hintText: 'Country',
                                               border: InputBorder.none,
@@ -499,6 +515,7 @@ class _NewAddressState extends State<NewAddress> {
                                 child: Padding(
                                   padding: EdgeInsets.all(10.0.w),
                                   child: TextField(
+                                    controller: landmarkController, // added controller
                                     decoration: InputDecoration(
                                       hintText: 'Near Hospitals',
                                       border: InputBorder.none,
@@ -528,7 +545,7 @@ class _NewAddressState extends State<NewAddress> {
                                   padding: EdgeInsets.all(8.0.r),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         'Lat: ${controller.currentLatLng.value?.latitude}',
@@ -550,7 +567,7 @@ class _NewAddressState extends State<NewAddress> {
                                     Get.bottomSheet(
                                       Container(
                                         width: isLandscape ? 350.w : 370.w,
-                                        height: isLandscape ? 200.h : 370.h,
+                                        height: isLandscape ? 200.h : 120.h,
                                         decoration: BoxDecoration(
                                           color: Color(0xFF00A86B),
                                           borderRadius: BorderRadius.only(
@@ -567,9 +584,8 @@ class _NewAddressState extends State<NewAddress> {
                                             return Column(
                                               mainAxisSize: MainAxisSize.min,
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              CrossAxisAlignment.start,
+
                                               children: [
                                                 Text(
                                                   "Update Locations",
@@ -581,23 +597,23 @@ class _NewAddressState extends State<NewAddress> {
                                                 ),
                                                 SizedBox(height: 10),
                                                 controller
-                                                        .loadingLocations
-                                                        .value
+                                                    .loadingLocations
+                                                    .value
                                                     ? Text(
-                                                        "Fetching GPS coordinates Updating...",
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 16,
-                                                        ),
-                                                      )
+                                                  "Fetching GPS coordinates Updating...",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                  ),
+                                                )
                                                     : Text(
-                                                        "Lat: ${controller.currentLatLng.value?.latitude}\n"
-                                                        "Lng: ${controller.currentLatLng.value?.longitude}",
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
+                                                  "Lat: ${controller.currentLatLng.value?.latitude}\n"
+                                                      "Lng: ${controller.currentLatLng.value?.longitude}",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
                                               ],
                                             );
                                           }),
@@ -617,9 +633,9 @@ class _NewAddressState extends State<NewAddress> {
                                       color: Colors.grey.shade400,
                                     ),
                                     child: Obx(
-                                      () => Column(
+                                          () => Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
                                           Icon(
                                             Icons.location_on_outlined,
@@ -628,7 +644,7 @@ class _NewAddressState extends State<NewAddress> {
                                           ),
                                           UiHelper.customText(
                                             text:
-                                                '${controller.currentLatLng.value?.latitude}, ${controller.currentLatLng.value?.longitude}',
+                                            '${controller.currentLatLng.value?.latitude}, ${controller.currentLatLng.value?.longitude}',
                                             color: Colors.grey.shade700,
                                             fontweight: FontWeight.normal,
                                             fontsize: 16,
@@ -646,7 +662,7 @@ class _NewAddressState extends State<NewAddress> {
                               Row(
                                 children: [
                                   Obx(
-                                    () => Checkbox(
+                                        () => Checkbox(
                                       value: controller.isDefault.value,
                                       onChanged: (value) {
                                         controller.toggleDefault(value);
@@ -701,119 +717,85 @@ class _NewAddressState extends State<NewAddress> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
-                      child: Card(
-                        elevation: 4.5,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (controller.validate()) {
-                              Get.snackbar("Success", "All fields are valid!");
-                            } else {
-                              Get.bottomSheet(
-                                Container(
-                                  width: isLandscape ? 700.w : 370.w,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      topRight: Radius.circular(15),
-                                    ),
-                                  ),
-                                  padding: const EdgeInsets.all(16),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (controller
-                                            .streetError
-                                            .value
-                                            .isNotEmpty)
-                                          Text(
-                                            controller.streetError.value,
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-
-                                        if (controller
-                                            .cityError
-                                            .value
-                                            .isNotEmpty)
-                                          Text(
-                                            controller.cityError.value,
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-
-                                        if (controller
-                                            .stateError
-                                            .value
-                                            .isNotEmpty)
-                                          Text(
-                                            controller.stateError.value,
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-
-                                        if (controller
-                                            .pinCodeError
-                                            .value
-                                            .isNotEmpty)
-                                          Text(
-                                            controller.pinCodeError.value,
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-
-                                        if (controller
-                                            .countryError
-                                            .value
-                                            .isNotEmpty)
-                                          Text(
-                                            controller.countryError.value,
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                  ),
+                      onPressed: () {
+                        if (!controller.validate()) {
+                          Get.bottomSheet(
+                            Container(
+                              width: isLandscape ? 700.w : 370.w,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
+                                  topRight: Radius.circular(15),
                                 ),
-                              );
-                            }
-                            saveNewForm();
-                          },
-                          child: Container(
-                            height: isLandscape ? 75.h : 56.h,
-                            width: 120.w,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(11),
-                              color: controller.selectedTypeIndex.value == 1
-                                  ? Color(0xFF00A86B)
-                                  : Colors.grey,
-                            ),
-                            child: Center(
-                              child: UiHelper.customText(
-                                text: "Save",
-                                color: Colors.grey.shade300,
-                                fontweight: FontWeight.bold,
-                                fontsize: isLandscape ? 5.sp : 19.sp,
                               ),
+                              padding: const EdgeInsets.all(16),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (controller.streetError.value.isNotEmpty)
+                                      Text(controller.streetError.value,
+                                          style: TextStyle(color: Colors.red, fontSize: 16)),
+                                    if (controller.cityError.value.isNotEmpty)
+                                      Text(controller.cityError.value,
+                                          style: TextStyle(color: Colors.red, fontSize: 16)),
+                                    if (controller.stateError.value.isNotEmpty)
+                                      Text(controller.stateError.value,
+                                          style: TextStyle(color: Colors.red, fontSize: 16)),
+                                    if (controller.pinCodeError.value.isNotEmpty)
+                                      Text(controller.pinCodeError.value,
+                                          style: TextStyle(color: Colors.red, fontSize: 16)),
+                                    if (controller.countryError.value.isNotEmpty)
+                                      Text(controller.countryError.value,
+                                          style: TextStyle(color: Colors.red, fontSize: 16)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+
+                          return;
+                        }
+
+                        ///  CREATE FULL LOCATION RESULT OBJECT
+                        final newLocation = Location(
+                          streetAddress: streetController.text,
+                          city: cityController.text,
+                          state: stateController.text,
+
+                        );
+
+                        saveNewForm();
+                        Get.back(result: newLocation);
+                        // Save locally
+                    //
+                        // Return to PickLocation
+                      },
+                      child: Obx(() => Card(
+                        elevation: 4.5,
+                        child: Container(
+                          height: isLandscape ? 75.h : 56.h,
+                          width: 120.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(11),
+                            color: controller.selectedTypeIndex.value == 1
+                                ? Color(0xFF00A86B)
+                                : Colors.grey,
+                          ),
+                          child: Center(
+                            child: UiHelper.customText(
+                              text: "Save",
+                              color: Colors.grey.shade300,
+                              fontweight: FontWeight.bold,
+                              fontsize: isLandscape ? 5.sp : 19.sp,
                             ),
                           ),
                         ),
-                      ),
+                      )),
                     ),
+
                   ],
                 ),
               ],

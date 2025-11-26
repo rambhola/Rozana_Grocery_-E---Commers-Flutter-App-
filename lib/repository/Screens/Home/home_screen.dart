@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:rozana_grocery_app/CategoryCarousel/category_carousel.dart';
 import 'package:rozana_grocery_app/repository/Screens/Address/pick_location.dart';
 import 'package:rozana_grocery_app/repository/Screens/Profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -224,6 +225,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
+
+            //Getx slider widget Calling
+            CategoryCarousel(),
+
+
           ],
 
           // SizedBox(width: 1.w, height: 5.h),

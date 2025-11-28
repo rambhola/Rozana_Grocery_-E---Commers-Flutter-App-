@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../../widgets/ui_helper.dart';
-import '../Cart/cart_screen.dart';
-import '../Category/category_screen.dart';
-import '../Home/home_screen.dart';
-import '../Print/print_screen.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
@@ -18,10 +13,10 @@ class _BottomNavbarState extends State<BottomNavbar> {
 
   // lites of the all pages to navigates
   List<Widget> pages = [
-    HomeScreen(address: 'address', newAddress: 'newAddress',),
-    CategoryScreen(),
-    CartScreen(),
-    PrintScreen(),
+    // HomeScreen(address: 'address', newAddress: 'newAddress',),
+    // CategoryScreen(address: '',newAddress: '',),
+    // CartScreen(),
+    // PrintScreen(),
   ];
   @override
   Widget build(BuildContext context) {

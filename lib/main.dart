@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
             return GetMaterialApp(
               useInheritedMediaQuery: true, // ensures correct adaptive scaling
               debugShowCheckedModeBanner: false,
-              home: HomeScreen(address: '', newAddress: ''), // or HomeScreen() for testing
+              home:HomeScreen(address: '',  newAddress: '',),// or HomeScreen() for testing
             );
           },
         );

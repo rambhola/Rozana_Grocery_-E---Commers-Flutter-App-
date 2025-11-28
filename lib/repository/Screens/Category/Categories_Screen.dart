@@ -1,31 +1,25 @@
-import 'package:get/get.dart';
-import 'package:rozana_grocery_app/CategoryCarousel/category_carousel.dart';
-import 'package:rozana_grocery_app/repository/Screens/Category/grocery_product_card.dart';
-import 'package:rozana_grocery_app/repository/Screens/Profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../widgets/ui_helper.dart';
-import '../Category/Categories_Screen.dart';
-import '../Wallet/my_wallet.dart';
+import 'package:get/get.dart';
 
-class HomeScreen extends StatefulWidget {
+import '../../../CategoryCarousel/category_carousel.dart';
+import '../../widgets/ui_helper.dart';
+import '../Profile/profile_screen.dart';
+import '../Wallet/my_wallet.dart';
+import 'grocery_product_card.dart';
+
+class CategoriesScreen extends StatefulWidget {
   final String address;
   final String newAddress;
-
-  const HomeScreen({
-    super.key,
-    required this.address,
-    required this.newAddress,
-  });
+  const CategoriesScreen({super.key, required this.address, required this.newAddress});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _CategoriesScreenState extends State<CategoriesScreen> {
   final TextEditingController searchController = TextEditingController();
   bool isAddressExpanded = false;
-
   @override
   Widget build(BuildContext context) {
     final address = widget.address;
@@ -40,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, constraints) {
                 final isLandScape =
                     constraints.maxHeight > constraints.maxWidth;
-
                 return Container(
                   width: double.infinity,
                   height: isLandScape ? 260.h : 100.h,
@@ -55,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     horizontal: 16.w,
                     vertical: 14.h,
                   ),
-
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -77,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             SizedBox(width: 8),
 
+                            // ------ ADDRESS + HOME ------
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
-
+                            // Aero Button
                             Padding(
                               padding: EdgeInsets.only(right: 25, top: 25),
                               child: GestureDetector(
@@ -128,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
 
+                            // -------- WALLET BUTTON --------
                             Container(
                               margin: EdgeInsets.only(top: 10),
                               height: isLandScape ? 55.h : 45.h,
@@ -152,9 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-
                             SizedBox(width: 12.w),
 
+                            // -------- PROFILE BUTTON --------
                             Container(
                               margin: EdgeInsets.only(top: 10),
                               height: isLandScape ? 55.h : 45.h,
@@ -177,6 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
 
+                      // ================== SEARCH BAR ==================
                       Row(
                         children: [
                           Expanded(
@@ -205,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
 
                           SizedBox(width: 8.w),
-
+                          //......Notification Widget....
                           Container(
                             height: isLandScape ? 65.h : 54.h,
                             width: 50.w,
@@ -229,7 +224,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
 
-            CategoryCarousel(),
 
             Row(
               children: [
@@ -245,19 +239,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Spacer(),
-
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => CategoriesScreen(
-                      address: widget.address,
-                      newAddress: widget.newAddress,
-                    ));
+
                   },
                   child: Padding(
                     padding: EdgeInsets.only(top: 10.h, right: 10.w),
                     child: UiHelper.customText(
                       text: 'See All',
-                      color: Color(0xFF00A86B),
+                      color: const Color(0xFF00A86B),
                       fontweight: FontWeight.w700,
                       fontsize: 14,
                       fontfamily: 'Poppins',
@@ -265,7 +255,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-
               ],
             ),
 

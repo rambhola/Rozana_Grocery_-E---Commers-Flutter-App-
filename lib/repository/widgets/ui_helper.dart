@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UiHelper {
   static customImage({required String img}) {
-    return Image.asset("assets/Images/$img");
+    return Image.asset("assets/Images/$img",fit: BoxFit.contain,);
   }
 
   static customIconsImage({required String img}) {

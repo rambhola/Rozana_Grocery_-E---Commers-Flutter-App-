@@ -5,6 +5,7 @@ class CategoryController extends GetxController {
   var categories = <Map<String, String>>[
     {'icon': 'assets/icon/Grocery 1.jpg'},
     {'icon': 'assets/icon/Grocery 2.jpg'},
+    {'icon': 'assets/icon/Grocery 3.jpg'},
     {'icon': 'assets/icon/Weekend offer Mega sale List 1.png'},
     {'icon': 'assets/icon/Weekend offer Mega sale List 2.png'},
     {'icon': 'assets/icon/Weekend offer Mega sale List 3.png'},

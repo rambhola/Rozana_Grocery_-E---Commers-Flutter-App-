@@ -15,10 +15,17 @@ class CategoryCarousel extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                  width: 350,
-                  height: 230,
-                  child: Image.asset(cat['icon']!,fit: BoxFit.contain,)),
+              child: Card(
+                elevation: 10,
+                color: Colors.grey.shade300,
+                child: Container(
+                    width: 350,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(45),
+                    ),
+                    child: Image.asset(cat['icon']!,fit: BoxFit.contain,)),
+              ),
             ),
           ],
         );

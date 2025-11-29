@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rozana_grocery_app/repository/Screens/Category/see_all_products_list_screen.dart';
 import '../../widgets/ui_helper.dart';
+import '../Home/home_screen.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
@@ -14,7 +16,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
   // lites of the all pages to navigates
   List<Widget> pages = [
     // HomeScreen(address: 'address', newAddress: 'newAddress',),
-    // CategoryScreen(address: '',newAddress: '',),
+    //   CategoriesScreen(address: '', newAddress: ''),
     // CartScreen(),
     // PrintScreen(),
   ];

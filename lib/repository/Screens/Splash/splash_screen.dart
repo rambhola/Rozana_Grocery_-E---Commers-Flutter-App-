@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            UiHelper.customImage(img: "blinkit_logo.png"),
+            // UiHelper.customImage(img: "blinkit_logo.png"),
           ],
         ),
       ),

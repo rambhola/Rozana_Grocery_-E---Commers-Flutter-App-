@@ -5,7 +5,7 @@ import 'package:rozana_grocery_app/repository/Screens/Profile/profile_screen.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../widgets/ui_helper.dart';
-import '../Category/Categories_Screen.dart';
+import '../Category/see_all_products_list_screen.dart';
 import '../Wallet/my_wallet.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => CategoriesScreen(
+                    Get.to(() => SeeAllProductsListScreen(
                       address: widget.address,
                       newAddress: widget.newAddress,
                     ));

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:rozana_grocery_app/CategoryCarousel/category_carousel.dart';
 import 'package:rozana_grocery_app/repository/Screens/Category/grocery_product_card.dart';
+import 'package:rozana_grocery_app/repository/Screens/Category/product_decription_page.dart';
 import 'package:rozana_grocery_app/repository/Screens/Profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -275,38 +276,53 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(width: 15.w),
-                  GroceryProductCard(
-                    image: 'Furtune_Rise-removebg-preview.png',
-                    name: 'FORTUNE Sona Masoori\nSupreme Rice',
-                    price: '749',
-                    oldPrice: '1050',
+                  GestureDetector(
+                    onTap: () => Get.to(ProductDecriptionPage()),
+                    child: GroceryProductCard(
+                      image: 'Furtune_Rise-removebg-preview.png',
+                      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+                      price: '749',
+                      oldPrice: '1050',
+                    ),
                   ),
                   const SizedBox(width: 12),
-                  GroceryProductCard(
-                    image: 'Furtune_Rise-removebg-preview.png',
-                    name: 'FORTUNE Sona Masoori\nSupreme Rice',
-                    price: '749',
-                    oldPrice: '1050',
+                  GestureDetector(
+                    onTap: () => Get.to(ProductDecriptionPage()),
+                    child: GroceryProductCard(
+                      image: 'Furtune_Rise-removebg-preview.png',
+                      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+                      price: '749',
+                      oldPrice: '1050',
+                    ),
                   ),
                   SizedBox(width: 15.w),
-                  GroceryProductCard(
-                    image: 'Furtune_Rise-removebg-preview.png',
-                    name: 'FORTUNE Sona Masoori\nSupreme Rice',
-                    price: '749',
-                    oldPrice: '1050',
+                  GestureDetector(
+                    onTap: () => Get.to(ProductDecriptionPage()),
+                    child: GroceryProductCard(
+                      image: 'Furtune_Rise-removebg-preview.png',
+                      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+                      price: '749',
+                      oldPrice: '1050',
+                    ),
                   ),
                   SizedBox(width: 15.w),
-                  GroceryProductCard(
-                    image: 'Furtune_Rise-removebg-preview.png',
-                    name: 'FORTUNE Sona Masoori\nSupreme Rice',
-                    price: '749',
-                    oldPrice: '1050',
+                  GestureDetector(
+                    onTap:  () => Get.to(ProductDecriptionPage()),
+                    child: GroceryProductCard(
+                      image: 'Furtune_Rise-removebg-preview.png',
+                      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+                      price: '749',
+                      oldPrice: '1050',
+                    ),
                   ),
-                  GroceryProductCard(
-                    image: 'Furtune_Rise-removebg-preview.png',
-                    name: 'FORTUNE Sona Masoori\nSupreme Rice',
-                    price: '749',
-                    oldPrice: '1050',
+                  GestureDetector(
+                    onTap: () => Get.to(ProductDecriptionPage()),
+                    child: GroceryProductCard(
+                      image: 'Furtune_Rise-removebg-preview.png',
+                      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+                      price: '749',
+                      oldPrice: '1050',
+                    ),
                   ),
                 ],
               ),

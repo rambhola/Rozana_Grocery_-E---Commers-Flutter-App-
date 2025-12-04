@@ -4,7 +4,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:rozana_grocery_app/CategoryCarousel/quantity_controller.dart';
 import 'package:rozana_grocery_app/CategoryCarousel/rating_controller.dart';
 import 'package:rozana_grocery_app/repository/Screens/Category/item_sizecolour_container.dart';
+import 'package:rozana_grocery_app/repository/Screens/Category/recommendation_section.dart';
 import 'package:rozana_grocery_app/repository/widgets/ui_helper.dart';
+
+import '../../../Model/product_model.dart';
+import 'grocery_product_card.dart';
 
 class ProductDecriptionPage extends StatefulWidget {
   const ProductDecriptionPage({super.key});
@@ -19,6 +23,60 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
   final  itemSizeColourContainer = Get.put(
     ItemSizeColourContainer(),
   );
+
+  //ProductList
+  List<ProdcutModel> productList = [
+    ProdcutModel(
+      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+      image: 'Furtune_Rise-removebg-preview.png',
+      price: 749,
+      oldPrice: 1050,
+    ),
+    ProdcutModel(
+      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+      image: 'Furtune_Rise-removebg-preview.png',
+      price: 749,
+      oldPrice: 1050,
+    ),
+    ProdcutModel(
+      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+      image: 'Furtune_Rise-removebg-preview.png',
+      price: 749,
+      oldPrice: 1050,
+    ),
+    ProdcutModel(
+        name:  'FORTUNE Sona Masoori\nSupreme Rice',
+        image:
+        'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050),
+    ProdcutModel(
+      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+      image: 'Furtune_Rise-removebg-preview.png',
+      price: 749,
+      oldPrice: 1050,
+    ),
+    ProdcutModel(
+      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+      image: 'Furtune_Rise-removebg-preview.png',
+      price: 749,
+      oldPrice: 1050,
+    ),
+    ProdcutModel(
+      name: 'FORTUNE Sona Masoori\nSupreme Rice',
+      image: 'Furtune_Rise-removebg-preview.png',
+      price: 749,
+      oldPrice: 1050,
+    ),
+    ProdcutModel(
+        name:  'FORTUNE Sona Masoori\nSupreme Rice',
+        image:
+        'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050),
+
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -348,13 +406,47 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
               ),
             ),
             //Recommended Products Lists
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Recommended For You",
-                style: TextStyle(fontSize: 21),
-              ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Recommended For You",
+                    style: TextStyle(fontSize: 21),
+                  ),
+                ),
+                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () => Get.to(ProductDecriptionPage()),
+                    child: Text(
+                      'see All',
+                      style: TextStyle(fontSize: 21,color: Color(0xFF00A86B)),
+                    ),
+                  ),
+                ),
+              ],
             ),
+            SizedBox(
+              height: 215,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: productList.length,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final product = productList[index];
+
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child:  SizedBox(
+                        width: 140,
+                        child: RecommendationSection(image: product.image)),
+                  );
+                },
+              ),
+            )
+
           ],
         ),
       ),

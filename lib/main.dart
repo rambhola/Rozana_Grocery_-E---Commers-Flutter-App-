@@ -3,10 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:rozana_grocery_app/repository/Screens/Category/product_decription_page.dart';
-import 'package:rozana_grocery_app/repository/Screens/Category/recommendation_section.dart';
-import 'package:rozana_grocery_app/repository/Screens/Home/home_screen.dart';
-import 'package:rozana_grocery_app/repository/Screens/Login/login_screen.dart';
+import 'package:rozana_grocery_app/presentation/home/view/home_screen.dart';
 import 'firebase_options.dart';
 
 

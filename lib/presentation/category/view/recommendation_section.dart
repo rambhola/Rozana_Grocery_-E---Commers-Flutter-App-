@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/widgets/ui_helper.dart';
+import '../view_model/favorites_controller.dart';
 
 class RecommendationSection extends StatelessWidget {
   final String image;
@@ -10,6 +11,8 @@ class RecommendationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FavoritesController favController = Get.put(FavoritesController());
+
     return Container(
       height: 180,
       decoration: BoxDecoration(
@@ -28,7 +31,7 @@ class RecommendationSection extends StatelessWidget {
           Positioned(
             top: 25,
             right: 1,
-            child: Container(
+            child: Obx(() => Container(
               height: 40,
               width: 40,
               decoration: BoxDecoration(
@@ -36,14 +39,21 @@ class RecommendationSection extends StatelessWidget {
                 color: Colors.grey.shade200,
               ),
               child: IconButton(
-                onPressed: () =>{},
-                icon: const Icon(
+                onPressed: () =>{
+                  Get.find<FavoritesController>().toggleFavorites()
+                },
+                icon: favController.isFavorite.value ?
+                const Icon(
                   Icons.favorite_border_outlined,
+                  color: Color(0xff3c8c52),
+                  size: 23,
+                ): const Icon(
+                  Icons.favorite_outlined,
                   color: Color(0xff3c8c52),
                   size: 23,
                 ),
               ),
-            ),
+            ),)
           ),
 
           

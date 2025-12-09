@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rozana_grocery_app/presentation/category/view_model/favorites_controller.dart';
 import '../../../core/widgets/ui_helper.dart';
 import '../../category/view/category_carousel.dart';
 import '../../category/view/grocery_product_card.dart';
@@ -29,6 +30,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController searchController = TextEditingController();
   final ProductController controller = Get.put(ProductController());
+
   bool isAddressExpanded = false;
 
   @override

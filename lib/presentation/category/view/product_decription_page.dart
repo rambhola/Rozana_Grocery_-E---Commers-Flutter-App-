@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:rozana_grocery_app/presentation/category/view/recommendation_section.dart';
+import 'package:rozana_grocery_app/presentation/category/view/see_all_products_list_screen.dart';
+import 'package:rozana_grocery_app/presentation/category/view_model/share_controller.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../core/widgets/ui_helper.dart';
 import '../../../data/models/view_model/product_model.dart';
+import '../view_model/favorites_controller.dart';
 import '../view_model/quantity_controller.dart';
 import '../view_model/rating_controller.dart';
 import 'item_sizecolour_container.dart';
 
 class ProductDecriptionPage extends StatefulWidget {
+
   const ProductDecriptionPage({super.key});
 
   @override
@@ -18,10 +23,13 @@ class ProductDecriptionPage extends StatefulWidget {
 }
 
 class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
+
+
   final RatingController ratingController = Get.put(RatingController());
   final QuantityController quantityController = Get.put(QuantityController());
   final itemSizeColourContainer = Get.put(ItemSizeColourContainer());
-
+  final FavoritesController favController = Get.put(FavoritesController());
+  final ShareController shareController =Get.put(ShareController());
   List<ProdcutModel> productList = [
     ProdcutModel(
       name: 'FORTUNE Sona Masoori\nSupreme Rice',
@@ -73,6 +81,7 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
     ),
   ];
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +104,8 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
           ),
         ),
         actions: [
-          Container(
+          // Favorite Button
+          Obx(() => Container(
             height: 40,
             width: 40,
             margin: const EdgeInsets.only(top: 5, right: 10),
@@ -104,14 +114,14 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
               color: Colors.grey.shade200,
             ),
             child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite,
-                color: Color(0xff3c8c52),
-                size: 23,
-              ),
+              onPressed: () => favController.toggleFavorites(),
+              icon: favController.isFavorite.value
+                  ? const Icon(Icons.favorite, color: Color(0xff3c8c52), size: 23)
+                  : const Icon(Icons.favorite_border, color: Color(0xff3c8c52), size: 23),
             ),
-          ),
+          )),
+
+          // Share Button
           Container(
             height: 40,
             width: 40,
@@ -121,21 +131,24 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
               color: Colors.grey.shade200,
             ),
             child: IconButton(
-              onPressed: () => {},
-              icon: const Icon(Icons.share, color: Color(0xff3c8c52), size: 23),
+              onPressed: () => shareController.shareProduct(
+                  productList[0].name,
+                  productList[0].price.toDouble()
+              ),
+              icon: Icon(Icons.share, size: 23, color: Color(0xff3c8c52)),
             ),
           ),
         ],
+
         backgroundColor: Colors.grey.shade300,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.only(bottom: 90),   // <-- FIX ADDED HERE
+            padding: EdgeInsets.only(bottom: 90), // <-- FIX ADDED HERE
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 35),
                   child: SizedBox(
@@ -164,19 +177,20 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             RatingBar.builder(
-                              initialRating: ratingController.currentRating.value,
+                              initialRating:
+                                  ratingController.currentRating.value,
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: true,
                               itemCount: 5,
                               itemSize: 25,
                               itemBuilder: (context, _) =>
-                              const Icon(Icons.star, color: Colors.amber),
+                                  const Icon(Icons.star, color: Colors.amber),
                               onRatingUpdate: ratingController.updateRating,
                             ),
                             const SizedBox(width: 8),
                             Obx(
-                                  () => Text(
+                              () => Text(
                                 "(${ratingController.currentRating.value})",
                                 style: TextStyle(
                                   fontSize: 18,
@@ -191,7 +205,7 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
                       const SizedBox(width: 20),
 
                       Obx(
-                            () => Row(
+                        () => Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
@@ -216,7 +230,9 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
                             ),
 
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
                               child: Text(
                                 '${quantityController.quantity.value}',
                                 style: TextStyle(
@@ -235,7 +251,11 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
                               ),
                               child: IconButton(
                                 onPressed: quantityController.increment,
-                                icon: Icon(Icons.add, color: Colors.white, size: 20),
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
                               ),
                             ),
                           ],
@@ -247,10 +267,7 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
 
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    'Ingredients',
-                    style: TextStyle(fontSize: 21),
-                  ),
+                  child: Text('Ingredients', style: TextStyle(fontSize: 21)),
                 ),
 
                 const Padding(
@@ -285,94 +302,159 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        Obx(() => GestureDetector(
-                          onTap: () => itemSizeColourContainer.selectContainer(0),
-                          child: Container(
-                            height: 50,
-                            width: 75,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: itemSizeColourContainer.selectedIndex.value == 0
-                                  ? Colors.amber
-                                  : Color(0xFF00A86B),
-                            ),
-                            child: Center(
-                              child: Text('10kg', style: TextStyle(color: Colors.white, fontSize: 18)),
+                        Obx(
+                          () => GestureDetector(
+                            onTap: () =>
+                                itemSizeColourContainer.selectContainer(0),
+                            child: Container(
+                              height: 50,
+                              width: 75,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color:
+                                    itemSizeColourContainer
+                                            .selectedIndex
+                                            .value ==
+                                        0
+                                    ? Colors.amber
+                                    : Color(0xFF00A86B),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '10kg',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        )),
+                        ),
                         SizedBox(width: 10),
 
-                        Obx(() => GestureDetector(
-                          onTap: () => itemSizeColourContainer.selectContainer(1),
-                          child: Container(
-                            height: 50,
-                            width: 75,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: itemSizeColourContainer.selectedIndex.value == 1
-                                  ? Colors.amber
-                                  : Color(0xFF00A86B),
-                            ),
-                            child: Center(
-                              child: Text('20kg', style: TextStyle(color: Colors.white, fontSize: 18)),
+                        Obx(
+                          () => GestureDetector(
+                            onTap: () =>
+                                itemSizeColourContainer.selectContainer(1),
+                            child: Container(
+                              height: 50,
+                              width: 75,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color:
+                                    itemSizeColourContainer
+                                            .selectedIndex
+                                            .value ==
+                                        1
+                                    ? Colors.amber
+                                    : Color(0xFF00A86B),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '20kg',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        )),
+                        ),
                         SizedBox(width: 10),
 
-                        Obx(() => GestureDetector(
-                          onTap: () => itemSizeColourContainer.selectContainer(2),
-                          child: Container(
-                            height: 50,
-                            width: 75,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: itemSizeColourContainer.selectedIndex.value == 2
-                                  ? Colors.amber
-                                  : Color(0xFF00A86B),
-                            ),
-                            child: Center(
-                              child: Text('30kg', style: TextStyle(color: Colors.white, fontSize: 18)),
+                        Obx(
+                          () => GestureDetector(
+                            onTap: () =>
+                                itemSizeColourContainer.selectContainer(2),
+                            child: Container(
+                              height: 50,
+                              width: 75,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color:
+                                    itemSizeColourContainer
+                                            .selectedIndex
+                                            .value ==
+                                        2
+                                    ? Colors.amber
+                                    : Color(0xFF00A86B),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '30kg',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        )),
+                        ),
                         SizedBox(width: 10),
 
-                        Obx(() => GestureDetector(
-                          onTap: () => itemSizeColourContainer.selectContainer(3),
-                          child: Container(
-                            height: 50,
-                            width: 75,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: itemSizeColourContainer.selectedIndex.value == 3
-                                  ? Colors.amber
-                                  : Color(0xFF00A86B),
-                            ),
-                            child: Center(
-                              child: Text('40kg', style: TextStyle(color: Colors.white, fontSize: 18)),
+                        Obx(
+                          () => GestureDetector(
+                            onTap: () =>
+                                itemSizeColourContainer.selectContainer(3),
+                            child: Container(
+                              height: 50,
+                              width: 75,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color:
+                                    itemSizeColourContainer
+                                            .selectedIndex
+                                            .value ==
+                                        3
+                                    ? Colors.amber
+                                    : Color(0xFF00A86B),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '40kg',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        )),
+                        ),
                         SizedBox(width: 10),
 
-                        Obx(() => GestureDetector(
-                          onTap: () => itemSizeColourContainer.selectContainer(4),
-                          child: Container(
-                            height: 50,
-                            width: 75,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: itemSizeColourContainer.selectedIndex.value == 4
-                                  ? Colors.amber
-                                  : Color(0xFF00A86B),
-                            ),
-                            child: Center(
-                              child: Text('50kg', style: TextStyle(color: Colors.white, fontSize: 18)),
+                        Obx(
+                          () => GestureDetector(
+                            onTap: () =>
+                                itemSizeColourContainer.selectContainer(4),
+                            child: Container(
+                              height: 50,
+                              width: 75,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color:
+                                    itemSizeColourContainer
+                                            .selectedIndex
+                                            .value ==
+                                        4
+                                    ? Colors.amber
+                                    : Color(0xFF00A86B),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '50kg',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        )),
+                        ),
                       ],
                     ),
                   ),
@@ -382,14 +464,24 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
                   children: [
                     Padding(
                       padding: EdgeInsets.all(8),
-                      child: Text("Recommended For You", style: TextStyle(fontSize: 21)),
+                      child: Text(
+                        "Recommended For You",
+                        style: TextStyle(fontSize: 21),
+                      ),
                     ),
                     Spacer(),
                     Padding(
                       padding: EdgeInsets.all(8),
                       child: GestureDetector(
-                        onTap: () => Get.to(ProductDecriptionPage()),
-                        child: Text('see All', style: TextStyle(fontSize: 21, color: Color(0xFF00A86B))),
+                        onTap: () {Get.to(SeeAllProductsListScreen(address: '',
+                            newAddress: ''));} ,
+                        child: Text(
+                          'see All',
+                          style: TextStyle(
+                            fontSize: 21,
+                            color: Color(0xFF00A86B),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -414,7 +506,6 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
                     },
                   ),
                 ),
-
               ],
             ),
           ),
@@ -424,45 +515,58 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
         height: 75,
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child:                    Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Total Price", style: TextStyle(color: Colors.grey,fontSize: 15)),
-                    Obx(() =>Text(
-                      "₹${quantityController.totalPrice.toStringAsFixed(2)}",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ) ,),
-
+                    Text(
+                      "Total Price",
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    Obx(
+                      () => Text(
+                        "₹${quantityController.totalPrice.toStringAsFixed(2)}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              // Add to cart button
 
+              // Add to cart button
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: GestureDetector(
-                    onTap: () {
-
-                    },
+                    onTap: () {},
                     child: Container(
                       height: 65,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Color(0xFF00A86B),),
+                        borderRadius: BorderRadius.circular(25),
+                        color: Color(0xFF00A86B),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(width: 10,),
-                          Icon(CupertinoIcons.cart,color: Colors.white,size: 33,),
-                          SizedBox(width: 10,),
-                          Text("Add to Cart",style: TextStyle(color: Colors.white,fontSize: 23),),
+                          SizedBox(width: 10),
+                          Icon(
+                            CupertinoIcons.cart,
+                            color: Colors.white,
+                            size: 33,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "Add to Cart",
+                            style: TextStyle(color: Colors.white, fontSize: 23),
+                          ),
                         ],
                       ),
                     ),

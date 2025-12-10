@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rozana_grocery_app/presentation/category/view_model/favorites_controller.dart';
 import '../../../core/widgets/ui_helper.dart';
 import '../../category/view/category_carousel.dart';
 import '../../category/view/grocery_product_card.dart';
@@ -183,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       hintText: 'Search for products',
                                       hintStyle: TextStyle(
                                         color: Colors.grey[600],
-                                        fontSize: isLandScape ? 25.sp :14.sp,
+                                        fontSize: isLandScape ? 19.sp :14.sp,
                                       ),
                                       prefixIcon: Icon(Icons.search, color: Colors.black,size: 25,),
                                       border: InputBorder.none,
@@ -221,9 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: controller.filteredList.isEmpty
-                      ? Center(
-                    child: Text("No Products Found", style: TextStyle(fontSize: 16)),
-                  )
+                      ? Center(child: Text("No Products Found", style: TextStyle(fontSize: 16)))
                       : GridView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -236,73 +233,87 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     itemBuilder: (context, index) {
                       final product = controller.filteredList[index];
-                      return Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 5,
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Image.asset(
-                                "assets/Images/${product.image}",
-                                fit: BoxFit.contain,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              product.name,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                            ),
-                            SizedBox(height: 4),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-
-                              children: [
-                                Text(
-                                  "₹${product.price}",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                                Text(
-                                  "₹${product.oldPrice}",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                                ),
-                                // Add to cart button
-
-                                GestureDetector(
-                                  onTap: () {
-
-                                  },
-                                  child: Container(
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Color(0xFF00A86B),),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(width: 10,),
-                                        Icon(CupertinoIcons.cart,color: Colors.white,size: 33,),
-                                        SizedBox(width: 10,),
-                                        Text("Add to Cart",style: TextStyle(color: Colors.white,fontSize: 18),),
-                                      ],
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Center(
+                                      child: Image.asset(
+                                        "assets/Images/${product.image}",
+                                        fit: BoxFit.contain,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: 8),
+                                  Text(
+                                    product.name,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                                    children: [
+                                      Text(
+                                        "₹${product.price}",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                      Text(
+                                        "₹${product.oldPrice}",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                          decoration: TextDecoration.lineThrough,
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                  // Add to cart button
+                                  GestureDetector(
+                                    onTap: () {
+
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 5),
+                                      child: Container(
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          color: Color(0xFF00A86B),),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: 10,),
+                                            Icon(CupertinoIcons.cart,color: Colors.white,size: 33,),
+                                            SizedBox(width: 10,),
+                                            Text("Add to Cart",style: TextStyle(color: Colors.white,fontSize: 18),),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
                         ),
                       );
                     },

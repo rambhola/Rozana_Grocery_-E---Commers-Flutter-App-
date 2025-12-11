@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:rozana_grocery_app/core/widgets/ui_helper.dart';
 import 'package:rozana_grocery_app/presentation/cart/view_model/cart_controller.dart';
+import '../../category/view_model/quantity_controller.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
@@ -12,13 +13,12 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
   @override
   Widget build(BuildContext context) {
     final CartController cart = Get.find<CartController>();
+    final QuantityController quantityController = Get.put(QuantityController());
 
     return Scaffold(
-
       appBar: AppBar(
         title: Text(
           "My Cart",
@@ -42,162 +42,183 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
         ),
-
-
       ),
-        body: Obx(() {
-          return Column(
-            children: [
-              // Cart Items List
-              
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(12),
-                  itemCount: cart.cartItems.length,
-                  itemBuilder: (context, index) {
-                    final item = cart.cartItems[index];
 
-                    return Container(
-                      height: 110,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(width:1,color: Colors.grey )
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Image
-                          ClipRRect(
+      body: Obx(() {
+        return Stack(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(12),
+                    itemCount: cart.cartItems.length,
+                    itemBuilder: (context, index) {
+                      final item = cart.cartItems[index];
+                      final QuantityController qty = Get.put(QuantityController(), tag: item.name);
+
+                      return Dismissible(
+                        key: Key(item.name),
+                        direction: DismissDirection.endToStart,  // left swipe only
+                        onDismissed: (direction) {
+                          cart.removeItemByName(index as String);   // item remove logic
+                        },
+
+                        background: Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          color: Colors.red,
+                          child: const Icon(Icons.delete, color: Colors.white, size: 30),
+                        ),
+
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.all(10),
+                          height: 170,
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            child: UiHelper.customImage(
-                              img: item.imageUrl,
-
-                            ),
+                            border: Border.all(width: 1.4, color: Colors.grey.shade300),
                           ),
-                          const SizedBox(width: 10),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: UiHelper.customImage(img: item.imageUrl),
+                              ),
 
-                          // Name + Price
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.name.toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                                ),
-                                const SizedBox(height: 4),
-                                Text('₹${item.price}'),
-                              ],
-                            ),
-                          ),
+                              const SizedBox(width: 12),
 
-                          // Minus - Qty - Plus
-                          Container(
-                            height: 45,
-                            width: 120,
-                            margin: EdgeInsets.symmetric(vertical: 25,horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(20)
-
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-
-                                GestureDetector(
-                                  onTap: () => cart.decreaseQty(item.name),
-                                  child: Container(
-                                    height: 32,
-                                    width: 32,
-                                    decoration: BoxDecoration(
-                                      color: Colors.green.shade300,
-                                      shape: BoxShape.circle,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      item.name,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    child: const Icon(Icons.remove, size: 18,color: Colors.white,),
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-
-                                Text(
-                                  '${item.qty}',
-                                  style: const TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(width: 8),
-
-                                GestureDetector(
-                                  onTap: () => cart.increaseQty(item.name),
-                                  child: Container(
-                                    height: 32,
-                                    width: 32,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xff3c8c52),
-                                      shape: BoxShape.circle,
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      "₹${item.price}",
+                                      style: const TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                    child: const Icon(Icons.add, size: 18,color: Colors.white,),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+
+                              Obx(() {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 45,
+                                          width: 45,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: quantityController.quantity.value > 0
+                                                ? const Color(0xff3c8c52)
+                                                : const Color(0xff2e6767),
+                                          ),
+                                          child: IconButton(
+                                            onPressed: quantityController.quantity.value > 0
+                                                ? quantityController.decrement
+                                                : null,
+                                            icon: Icon(Icons.remove, color: quantityController.bgColor.value, size: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          quantityController.quantity.value.toString(),
+                                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Container(
+                                          height: 45,
+                                          width: 45,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xff3c8c52),
+                                          ),
+                                          child: IconButton(
+                                            onPressed: quantityController.increment,
+                                            icon: const Icon(Icons.add, color: Colors.white, size: 20),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    const SizedBox(height: 8),
+
+                                    Text(
+                                      quantityController.totalPrice.toString(),
+                                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                );
+                              }),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
+                        ),
+                      );
+
+                    },
+                  ),
                 ),
-              ),
 
-              // Coupon + Apply
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: SizedBox(
-                      width: 250,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter Coupon Code',
-                          hintStyle:
-                          const TextStyle(color: Colors.grey, fontSize: 18),
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Enter Coupon Code",
+                            hintStyle: const TextStyle(fontSize: 16, color: Colors.grey),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                      const SizedBox(width: 10),
+                      Container(
+                        height: 50,
+                        width: 110,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff3c8c52),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Apply",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  Container(
-                    width: 100,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff3c8c52),
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "Apply",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        })
+                ),
 
 
-// helper for round +/- button
-
-
+              ],
+            ),
+          ],
+        );
+      }),
     );
   }
 }

@@ -559,6 +559,7 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
                             imageUrl: product.image,
                             price: product.price,
                             name: product.name,
+                            qty: 1,
                         ),);
                       // Navigate to cart screen
                       Get.to(() => CartScreen());

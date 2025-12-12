@@ -290,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   // Add to cart button
                                   GestureDetector(
                                     onTap: () {
-
+                                      Get.to(ProductDecriptionPage());
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 5),

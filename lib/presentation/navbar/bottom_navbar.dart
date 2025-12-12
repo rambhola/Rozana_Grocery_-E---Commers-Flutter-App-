@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:rozana_grocery_app/presentation/category/view/see_all_products_list_screen.dart';
+import 'package:rozana_grocery_app/presentation/profile/view/profile_screen.dart';
 import '../../core/widgets/ui_helper.dart';
+import '../cart/view/cart_screen.dart';
+import '../home/view/home_screen.dart';
+
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
@@ -12,12 +16,13 @@ class BottomNavbar extends StatefulWidget {
 class _BottomNavbarState extends State<BottomNavbar> {
   int currentIndex = 0;
 
+
   // lites of the all pages to navigates
   List<Widget> pages = [
-    // HomeScreen(address: 'address', newAddress: 'newAddress',),
-    //   CategoriesScreen(address: '', newAddress: ''),
-    // CartScreen(),
-    // PrintScreen(),
+    HomeScreen(address: 'address', newAddress: 'newAddress',),
+    SeeAllProductsListScreen(address: '', newAddress: ''),
+    CartScreen(),
+    ProfileScreen(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
           ),
           BottomNavigationBarItem(
             icon: UiHelper.customImage(img: 'printer 1.png'),
-              label: 'Print'
+              label: 'Profile'
           ),
 
         ],

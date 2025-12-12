@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:rozana_grocery_app/presentation/cart/view_model/cart_controller.dart';
 
 import '../../../core/widgets/ui_helper.dart';
+import '../../../data/models/view_model/product_model.dart';
+import '../../cart/view/cart_screen.dart';
+import '../../cart/view_model/cart_item.dart';
 class GroceryProductCard extends StatelessWidget {
   final String image;
   final String name;
@@ -17,6 +23,60 @@ class GroceryProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final CartController cartController = Get.find<CartController>();
+
+
+    List<ProdcutModel> productList = [
+      ProdcutModel(
+        name: 'FORTUNE Sona Masoori\nSupreme Rice',
+        image: 'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050,
+      ),
+      ProdcutModel(
+        name: 'FORTUNE Sona Masoori\nSupreme Rice',
+        image: 'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050,
+      ),
+      ProdcutModel(
+        name: 'FORTUNE Sona Masoori\nSupreme Rice',
+        image: 'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050,
+      ),
+      ProdcutModel(
+        name: 'FORTUNE Sona Masoori\nSupreme Rice',
+        image: 'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050,
+      ),
+      ProdcutModel(
+        name: 'FORTUNE Sona Masoori\nSupreme Rice',
+        image: 'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050,
+      ),
+      ProdcutModel(
+        name: 'FORTUNE Sona Masoori\nSupreme Rice',
+        image: 'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050,
+      ),
+      ProdcutModel(
+        name: 'FORTUNE Sona Masoori\nSupreme Rice',
+        image: 'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050,
+      ),
+      ProdcutModel(
+        name: 'FORTUNE Sona Masoori\nSupreme Rice',
+        image: 'Furtune_Rise-removebg-preview.png',
+        price: 749,
+        oldPrice: 1050,
+      ),
+    ];
     return Container(
       height: 180,
       width: 180,
@@ -90,17 +150,34 @@ class GroceryProductCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Container(
-                      height: 36,
-                      width: 36,
-                      decoration: const BoxDecoration(
-                        color: Color(0xff00A86B),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 20,
+                    GestureDetector(
+
+                      onTap: () {
+                        final product = productList[0];
+
+                        cartController.addToCart(
+                          CartItem(
+
+                              imageUrl: product.image,
+                              name: product.name,
+                              price: product.price,
+                              qty: 1,
+                          ),);
+                        // Navigate to cart screen
+                        Get.to(() => CartScreen());
+                      },
+                      child: Container(
+                        height: 36,
+                        width: 36,
+                        decoration: const BoxDecoration(
+                          color: Color(0xff00A86B),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ],

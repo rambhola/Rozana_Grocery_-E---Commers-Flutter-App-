@@ -16,7 +16,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final CartController cart = Get.find<CartController>();
-    final QuantityController quantityController = Get.put(QuantityController());
+    final QuantityController qty = Get.put(QuantityController());
 
     return Scaffold(
       appBar: AppBar(
@@ -48,6 +48,7 @@ class _CartScreenState extends State<CartScreen> {
         return Stack(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: ListView.builder(
@@ -58,10 +59,10 @@ class _CartScreenState extends State<CartScreen> {
                       final QuantityController qty = Get.put(QuantityController(), tag: item.name);
 
                       return Dismissible(
-                        key: Key(item.name),
+                        key: UniqueKey(),
                         direction: DismissDirection.endToStart,  // left swipe only
                         onDismissed: (direction) {
-                          cart.removeItemByName(index as String);   // item remove logic
+                          cart.removeItemByName(item.name);   // item remove logic
                         },
 
                         background: Container(
@@ -125,20 +126,20 @@ class _CartScreenState extends State<CartScreen> {
                                           width: 45,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color: quantityController.quantity.value > 0
+                                            color: qty.quantity.value > 0
                                                 ? const Color(0xff3c8c52)
                                                 : const Color(0xff2e6767),
                                           ),
                                           child: IconButton(
-                                            onPressed: quantityController.quantity.value > 0
-                                                ? quantityController.decrement
+                                            onPressed: qty.quantity.value > 0
+                                                ? qty.decrement
                                                 : null,
-                                            icon: Icon(Icons.remove, color: quantityController.bgColor.value, size: 20),
+                                            icon: Icon(Icons.remove, color: qty.bgColor.value, size: 20),
                                           ),
                                         ),
                                         const SizedBox(width: 10),
                                         Text(
-                                          quantityController.quantity.value.toString(),
+                                          qty.quantity.value.toString(),
                                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                         ),
                                         const SizedBox(width: 10),
@@ -150,7 +151,7 @@ class _CartScreenState extends State<CartScreen> {
                                             color: Color(0xff3c8c52),
                                           ),
                                           child: IconButton(
-                                            onPressed: quantityController.increment,
+                                            onPressed: qty.increment,
                                             icon: const Icon(Icons.add, color: Colors.white, size: 20),
                                           ),
                                         ),
@@ -160,7 +161,7 @@ class _CartScreenState extends State<CartScreen> {
                                     const SizedBox(height: 8),
 
                                     Text(
-                                      quantityController.totalPrice.toString(),
+                                      qty.totalPrice.toString(),
                                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                                     ),
                                   ],
@@ -175,43 +176,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: "Enter Coupon Code",
-                            hintStyle: const TextStyle(fontSize: 16, color: Colors.grey),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Container(
-                        height: 50,
-                        width: 110,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff3c8c52),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Apply",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+
 
 
               ],
@@ -219,6 +184,43 @@ class _CartScreenState extends State<CartScreen> {
           ],
         );
       }),
+      bottomNavigationBar:             Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Enter Coupon Code",
+                  hintStyle: const TextStyle(fontSize: 16, color: Colors.grey),
+                  filled: true,
+                  fillColor: Colors.grey.shade200,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Container(
+              height: 50,
+              width: 110,
+              decoration: BoxDecoration(
+                color: const Color(0xff3c8c52),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: const Center(
+                child: Text(
+                  "Apply",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+            )
+          ],
+        ),
+      ) ,
     );
   }
 }

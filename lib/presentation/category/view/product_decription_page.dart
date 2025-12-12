@@ -7,8 +7,6 @@ import 'package:rozana_grocery_app/presentation/cart/view_model/cart_item.dart';
 import 'package:rozana_grocery_app/presentation/category/view/recommendation_section.dart';
 import 'package:rozana_grocery_app/presentation/category/view/see_all_products_list_screen.dart';
 import 'package:rozana_grocery_app/presentation/category/view_model/share_controller.dart';
-import 'package:share_plus/share_plus.dart';
-
 import '../../../core/widgets/ui_helper.dart';
 import '../../../data/models/view_model/product_model.dart';
 import '../../cart/view/cart_screen.dart';
@@ -31,9 +29,9 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
   final RatingController ratingController = Get.put(RatingController());
   final QuantityController quantityController = Get.put(QuantityController());
   final itemSizeColourContainer = Get.put(ItemSizeColourContainer());
-  final FavoritesController favController = Get.put(FavoritesController());
+  final FavoritesController favController = Get.find<FavoritesController>();
   final ShareController shareController =Get.put(ShareController());
-  final CartController cartController = Get.put(CartController());
+  final CartController cartController = Get.find<CartController>();
 
   List<ProdcutModel> productList = [
     ProdcutModel(

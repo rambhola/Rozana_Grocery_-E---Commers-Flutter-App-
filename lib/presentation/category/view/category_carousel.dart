@@ -31,7 +31,7 @@ class CategoryCarousel extends StatelessWidget {
         );
       }).toList(),
       options: CarouselOptions(
-        height: 300,
+        height: 280,
         enlargeCenterPage: true,
         autoPlay: true,
         onPageChanged: (index, reason) {

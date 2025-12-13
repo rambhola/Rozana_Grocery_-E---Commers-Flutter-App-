@@ -9,6 +9,7 @@ import '../../category/view/see_all_products_list_screen.dart';
 import '../../category/view_model/product_controller.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../notification/view/notification_screen.dart';
 import '../../profile/view/profile_screen.dart';
 import '../../wallet/view/my_wallet.dart';
 
@@ -192,18 +193,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             SizedBox(width: 8.w),
-                            Container(
-                              height: isLandScape ? 65.h : 54.h,
-                              width: 50.w,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.notifications_outlined,
-                                  color: Color(0xFF00A86B),
-                                  size: 32,
+                            GestureDetector(
+                              onTap: () => Get.to(NotificationScreen()),
+                              child: Container(
+                                height: isLandScape ? 65.h : 54.h,
+                                width: 50.w,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.notifications_outlined,
+                                    color: Color(0xFF00A86B),
+                                    size: 32,
+                                  ),
                                 ),
                               ),
                             ),
@@ -323,7 +327,6 @@ class _HomeScreenState extends State<HomeScreen> {
               //---------------- NORMAL HOME SCREEN ----------------
               if (!isSearching) ...[
                 CategoryCarousel(),
-                SizedBox(height: 10.h),
                 Row(
                   children: [
                     Padding(

@@ -10,6 +10,7 @@ import '../../address/view/manage_address.dart';
 import '../../category/view/ImagePickerController.dart';
 import '../../coupons/view/my_coupons.dart';
 import '../../home/view/home_screen.dart';
+import '../../navbar/view_model/nevbaar_change_color.dart';
 import '../../orders/my_orders.dart';
 import '../../payment/payment_methods.dart';
 import '../../wallet/view/my_wallet.dart';
@@ -24,7 +25,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+
   final ImagePickerController controller = Get.put(ImagePickerController());
+
   void showLogoutDialog() {
     Get.defaultDialog(
       title: "Logout",
@@ -86,6 +90,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    Get.find<NavColourContainer>();
+
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -101,8 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               alignment: Alignment.center,
               child: IconButton(
                 onPressed: () {
-                  // Navigating to HomeScreen with required parameter
-                  Get.to(() => const HomeScreen(address: 'address', newAddress: 'newAddress',));
+                  Get.find<NavColourContainer>().backToHome();
                 },
                 icon: const Icon(
                   Icons.arrow_back,

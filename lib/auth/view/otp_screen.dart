@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:rozana_grocery_app/presentation/navbar/view_model/nevbaar_change_color.dart';
 import '../../core/widgets/ui_helper.dart';
 import '../../presentation/navbar/view/bottom_navbar.dart';
 
@@ -15,6 +18,9 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+ final NavColourContainer navColourContainer = Get.put(NavColourContainer());
+
+
   final TextEditingController otpController = TextEditingController();
   final FocusNode _focus = FocusNode();
 

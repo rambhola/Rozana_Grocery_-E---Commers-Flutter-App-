@@ -79,7 +79,7 @@ class GroceryProductCard extends StatelessWidget {
     ];
     return Container(
       height: 180,
-      width: 180,
+      width: 160,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         boxShadow: [

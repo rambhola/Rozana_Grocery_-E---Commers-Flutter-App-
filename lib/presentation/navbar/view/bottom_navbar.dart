@@ -5,6 +5,7 @@ import 'package:rozana_grocery_app/presentation/navbar/view_model/nevbaar_change
 import 'package:rozana_grocery_app/presentation/profile/view/profile_screen.dart';
 import '../../../core/widgets/ui_helper.dart';
 import '../../cart/view/cart_screen.dart';
+import '../../cart/view_model/cart_controller.dart';
 import '../../home/view/home_screen.dart';
 
 class BottomNavbar extends StatelessWidget {
@@ -12,11 +13,18 @@ class BottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NavColourContainer navController = Get.put(NavColourContainer());
+    final NavColourContainer navController =
+    Get.isRegistered<NavColourContainer>()
+        ? Get.find<NavColourContainer>()
+        : Get.put(NavColourContainer());
 
+    final CartController cartController =
+    Get.isRegistered<CartController>()
+        ? Get.find<CartController>()
+        : Get.put(CartController());
     return Scaffold(
       body: Obx(() => IndexedStack(
-        index: navController.selectedIndex.value.clamp(0, 3),  // Safe index 0-3
+        index: navController.selectedIndex.value.clamp(0, 3),
         children: [
           HomeScreen(address: 'address', newAddress: 'newAddress'),
           SeeAllProductsListScreen(address: '', newAddress: ''),
@@ -35,7 +43,7 @@ class BottomNavbar extends StatelessWidget {
         elevation: 8,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        onTap: navController.selectContainer,
+        onTap: (index) => navController.selectContainer(index),
         items: [
           BottomNavigationBarItem(
             icon: Container(
@@ -60,7 +68,6 @@ class BottomNavbar extends StatelessWidget {
             ),
             label: 'Home',
           ),
-          // CATEGORIES
           BottomNavigationBarItem(
             icon: Container(
               height: 28,
@@ -84,7 +91,6 @@ class BottomNavbar extends StatelessWidget {
             ),
             label: 'Categories',
           ),
-          // CART - Badge support ready
           BottomNavigationBarItem(
             icon: Stack(
               children: [
@@ -99,8 +105,7 @@ class BottomNavbar extends StatelessWidget {
                   ),
                   child: Center(child: UiHelper.customImage(img: 'Cart.png')),
                 ),
-                // Cart badge (future use)
-                if (navController.cartBadge > 0)
+                if (cartController.cartItems.isNotEmpty)
                   Positioned(
                     right: 0,
                     child: Container(
@@ -114,7 +119,7 @@ class BottomNavbar extends StatelessWidget {
                         minHeight: 12,
                       ),
                       child: Text(
-                        '${navController.cartBadge}',
+                        '${cartController.cartItems.length}',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 8,
@@ -136,7 +141,6 @@ class BottomNavbar extends StatelessWidget {
             ),
             label: 'Cart',
           ),
-          // MENU/PROFILE
           BottomNavigationBarItem(
             icon: Container(
               height: 28,

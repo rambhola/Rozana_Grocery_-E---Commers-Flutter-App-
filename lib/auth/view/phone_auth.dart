@@ -2,7 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
+import '../../presentation/cart/view_model/cart_controller.dart';
+import '../../presentation/navbar/view/bottom_navbar.dart';
+import '../../presentation/navbar/view_model/nevbaar_change_color.dart';
 import 'otp_screen.dart';
 
 class PhoneAuth extends StatefulWidget {
@@ -16,6 +21,12 @@ class _PhoneAuthState extends State<PhoneAuth> {
   TextEditingController phoneController = TextEditingController();
   bool _showError = false;
 
+  void handleLogin(){
+    Get.put(NavColourContainer());  // Initialize once
+    Get.put(CartController());
+    Get.offAll(() => BottomNavbar());
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +118,9 @@ class _PhoneAuthState extends State<PhoneAuth> {
 
                   await FirebaseAuth.instance.verifyPhoneNumber(
                     phoneNumber: '+91${phoneController.text.trim()}',
-                    verificationCompleted: (PhoneAuthCredential credential) {},
+                    verificationCompleted: (PhoneAuthCredential credential) {
+                      handleLogin();
+                    },
                     verificationFailed: (FirebaseAuthException ex) {},
                     codeSent: (String verificationId, int? resendToken) {
                       Navigator.push(

@@ -1,11 +1,9 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../core/widgets/ui_helper.dart';
-import '../../presentation/navbar/bottom_navbar.dart';
+import '../../presentation/navbar/view/bottom_navbar.dart';
+
 
 
 class OtpScreen extends StatefulWidget {

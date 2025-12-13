@@ -7,7 +7,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:rozana_grocery_app/presentation/cart/view_model/cart_controller.dart';
 import 'package:rozana_grocery_app/presentation/category/view_model/favorites_controller.dart';
-import 'package:rozana_grocery_app/presentation/navbar/bottom_navbar.dart';
+import 'package:rozana_grocery_app/presentation/navbar/view/bottom_navbar.dart';
+
 import 'firebase_options.dart';
 
 

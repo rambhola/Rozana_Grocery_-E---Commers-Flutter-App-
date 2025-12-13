@@ -301,10 +301,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: Color(0xFF00A86B),),
                                         child: Row(
                                           children: [
-                                            SizedBox(width: 10,),
-                                            Icon(CupertinoIcons.cart,color: Colors.white,size: 33,),
-                                            SizedBox(width: 10,),
-                                            Text("Add to Cart",style: TextStyle(color: Colors.white,fontSize: 18),),
+                                            SizedBox(width: 6,),
+                                            Icon(CupertinoIcons.cart,color: Colors.white,size: 28,),
+                                            SizedBox(width: 6,),
+                                            Text("Add to Cart",style: TextStyle(color: Colors.white,fontSize: 16),),
                                           ],
                                         ),
                                       ),

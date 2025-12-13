@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rozana_grocery_app/presentation/category/view/product_decription_page.dart';
-
 import '../../../core/widgets/ui_helper.dart';
 import '../../../data/models/view_model/product_model.dart';
 import '../../cart/view/cart_screen.dart';
@@ -120,11 +118,11 @@ class RecommendationSection extends StatelessWidget {
           ),
 
           Positioned(
-            left: 60,
+            left: 35,
             bottom: 10,
             child: Container(
               height: 35,
-              width: 65,
+              width: 75,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5),

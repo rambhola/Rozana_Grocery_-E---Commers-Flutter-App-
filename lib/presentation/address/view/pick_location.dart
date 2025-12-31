@@ -50,7 +50,7 @@ class _PickLocationState extends State<PickLocation> {
 
     if (newLocation != null && newLocation is Location) {
       setState(() {
-        saveLocations.add(newLocation); //
+        saveLocations.add(newLocation);
         _selectedIndex = saveLocations.length - 1;
         selectedLocation = newLocation;
       });

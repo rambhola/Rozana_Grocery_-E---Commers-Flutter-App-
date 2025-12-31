@@ -9,6 +9,7 @@ import 'package:rozana_grocery_app/presentation/category/view/see_all_products_l
 import 'package:rozana_grocery_app/presentation/category/view_model/share_controller.dart';
 import '../../../core/widgets/ui_helper.dart';
 import '../../../data/models/view_model/product_model.dart';
+import '../../address/controllers/addressController.dart';
 import '../../cart/view/cart_screen.dart';
 import '../view_model/favorites_controller.dart';
 import '../view_model/quantity_controller.dart';
@@ -476,8 +477,7 @@ class _ProductDecriptionPageState extends State<ProductDecriptionPage> {
                     Padding(
                       padding: EdgeInsets.all(8),
                       child: GestureDetector(
-                        onTap: () {Get.to(SeeAllProductsListScreen(address: '',
-                            newAddress: ''));} ,
+                        onTap: () {Get.to(SeeAllProductsListScreen(address: Get.find<AddressController>().usersAddress.value,));} ,
                         child: Text(
                           'see All',
                           style: TextStyle(

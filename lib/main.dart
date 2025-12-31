@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:rozana_grocery_app/auth/view/phone_auth.dart';
+import 'package:rozana_grocery_app/presentation/address/controllers/addressController.dart';
 import 'package:rozana_grocery_app/presentation/cart/view_model/cart_controller.dart';
 import 'package:rozana_grocery_app/presentation/category/view_model/favorites_controller.dart';
 import 'package:rozana_grocery_app/presentation/category/view_model/quantity_controller.dart';
@@ -21,6 +22,7 @@ void main() async {
   Get.put(FavoritesController());
   Get.put(NavColourContainer());
   Get.put(QuantityController());
+  Get.put(AddressController());
   runApp(const MyApp());
 }
 

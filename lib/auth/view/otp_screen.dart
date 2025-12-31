@@ -199,7 +199,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const BottomNavbar()),
+                              builder: (context) =>  BottomNavbar()),
                         );
                       } on FirebaseAuthException catch (ex) {
                         ScaffoldMessenger.of(context).showSnackBar(

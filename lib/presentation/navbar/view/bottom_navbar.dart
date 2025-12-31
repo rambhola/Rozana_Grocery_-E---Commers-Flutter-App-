@@ -4,15 +4,18 @@ import 'package:rozana_grocery_app/presentation/category/view/see_all_products_l
 import 'package:rozana_grocery_app/presentation/navbar/view_model/nevbaar_change_color.dart';
 import 'package:rozana_grocery_app/presentation/profile/view/profile_screen.dart';
 import '../../../core/widgets/ui_helper.dart';
+import '../../address/controllers/addressController.dart';
 import '../../cart/view/cart_screen.dart';
 import '../../cart/view_model/cart_controller.dart';
 import '../../home/view/home_screen.dart';
 
 class BottomNavbar extends StatelessWidget {
-  const BottomNavbar({super.key});
+  int? navIndex;
+ BottomNavbar({super.key,this.navIndex});
 
   @override
   Widget build(BuildContext context) {
+
     final NavColourContainer navController =
     Get.isRegistered<NavColourContainer>()
         ? Get.find<NavColourContainer>()
@@ -22,12 +25,20 @@ class BottomNavbar extends StatelessWidget {
     Get.isRegistered<CartController>()
         ? Get.find<CartController>()
         : Get.put(CartController());
+
+    if (navIndex != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        navController.selectContainer(
+          navIndex!.clamp(0, 3),
+        );
+      });
+    }
     return Scaffold(
       body: Obx(() => IndexedStack(
         index: navController.selectedIndex.value.clamp(0, 3),
         children: [
-          HomeScreen(address: 'address', newAddress: 'newAddress'),
-          SeeAllProductsListScreen(address: '', newAddress: ''),
+          HomeScreen(),
+          SeeAllProductsListScreen(address: Get.find<AddressController>().usersAddress.value, ),
           CartScreen(),
           ProfileScreen(),
         ],

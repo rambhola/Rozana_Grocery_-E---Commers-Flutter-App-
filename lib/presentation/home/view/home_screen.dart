@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rozana_grocery_app/presentation/address/controllers/addressController.dart';
 import '../../../core/widgets/ui_helper.dart';
 import '../../category/view/category_carousel.dart';
 import '../../category/view/grocery_product_card.dart';
@@ -14,13 +15,9 @@ import '../../profile/view/profile_screen.dart';
 import '../../wallet/view/my_wallet.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String address;
-  final String newAddress;
 
   const HomeScreen({
     super.key,
-    required this.address,
-    required this.newAddress,
   });
 
   @override
@@ -35,8 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final address = widget.address;
-    final newAddress = widget.newAddress;
+
 
     return Scaffold(
       body: Obx(() {
@@ -53,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   return Container(
                     width: double.infinity,
-                    height: isLandScape ? 260.h : 100.h,
+                    height: isLandScape ? 220.h : 100.h,
                     decoration: BoxDecoration(
                       color: Color(0xFF00A86B),
                       borderRadius: BorderRadius.only(
@@ -89,19 +85,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     AnimatedContainer(
                                       duration: Duration(milliseconds: 250),
-                                      child: Text(
-                                        newAddress.isNotEmpty
-                                            ? newAddress
-                                            : address.isNotEmpty
-                                            ? address
-                                            : "Select your delivery location",
-                                        maxLines: isAddressExpanded ? 3 : 1,
-                                        softWrap: true,
-                                        overflow: TextOverflow.fade,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
+                                      child: Obx(() =>
+                                        Text( Get.find<AddressController>().usersAddress.value.isEmpty ? "Select Address": Get.find<AddressController>().usersAddress.value,
+                                          maxLines: isAddressExpanded ? 3 : 1,
+                                          softWrap: true,
+                                          overflow: TextOverflow.fade,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -169,25 +162,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Expanded(
                               child: Container(
-                                height: isLandScape ? 65.h : 54.h,
+                                alignment: Alignment.centerLeft,
+                                height: isLandScape ? 50.h : 50.h,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10.r),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextField(
-                                    controller: searchController,
-                                    onChanged: (value) => controller.searchProducts(value),
-                                    decoration: InputDecoration(
-                                      hintText: 'Search for products',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey[600],
-                                        fontSize: isLandScape ? 19.sp :14.sp,
-                                      ),
-                                      prefixIcon: Icon(Icons.search, color: Colors.black,size: 25,),
-                                      border: InputBorder.none,
+                                child: TextField(
+                                  controller: searchController,
+                                  onChanged: (value) => controller.searchProducts(value),
+                                  decoration: InputDecoration(
+                                    hintText: 'Search for products',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: isLandScape ? 19.sp :14.sp,
                                     ),
+                                    prefixIcon: Icon(Icons.search, color: Colors.black,size: 25,),
+                                    border: InputBorder.none,
                                   ),
                                 ),
                               ),
@@ -196,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             GestureDetector(
                               onTap: () => Get.to(NotificationScreen()),
                               child: Container(
-                                height: isLandScape ? 65.h : 54.h,
+                                height: isLandScape ? 50.h : 54.h,
                                 width: 50.w,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -344,8 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     GestureDetector(
                       onTap: () {
                         Get.to(() => SeeAllProductsListScreen(
-                          address: widget.address,
-                          newAddress: widget.newAddress,
+                          address: Get.find<AddressController>().usersAddress.value,
                         ));
                       },
                       child: Padding(

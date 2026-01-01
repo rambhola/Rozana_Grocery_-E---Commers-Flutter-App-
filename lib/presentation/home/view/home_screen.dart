@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Text(
                                       "Home",
-                                      style: TextStyle(color: Colors.white, fontSize: 16),
+                                      style: TextStyle(color: Colors.white, fontSize: 12),
                                     ),
                                     AnimatedContainer(
                                       duration: Duration(milliseconds: 250),
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           overflow: TextOverflow.fade,
                                           style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 18,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
@@ -175,9 +175,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     hintText: 'Search for products',
                                     hintStyle: TextStyle(
                                       color: Colors.grey[600],
-                                      fontSize: isLandScape ? 19.sp :14.sp,
+                                      fontSize: isLandScape ? 16.h : 14.sp,
                                     ),
-                                    prefixIcon: Icon(Icons.search, color: Colors.black,size: 25,),
+                                    prefixIcon: Icon(Icons.search, color: Colors.black),
                                     border: InputBorder.none,
                                   ),
                                 ),

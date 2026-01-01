@@ -129,7 +129,7 @@ class _SeeAllProductsListScreenState extends State<SeeAllProductsListScreen> {
                                   "Home",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16,
+                                    fontSize: 12,
                                   ),
                                 ),
                                 AnimatedContainer(
@@ -143,7 +143,7 @@ class _SeeAllProductsListScreenState extends State<SeeAllProductsListScreen> {
                                     overflow: TextOverflow.fade,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
